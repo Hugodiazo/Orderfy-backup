@@ -1,0 +1,106 @@
+.add-link{
+    cursor: pointer;
+}
+
+/* tarjetas restaurante */
+.wrap {
+    width: 100% !important; 
+    margin: 0 auto;
+    margin-bottom: 2px;
+}
+
+.wrap-title-section {
+    margin-top: 7rem;
+}
+
+.column-2.carta {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    column-gap: 1rem;
+    row-gap: 1rem;
+}
+
+.plato-carta {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cfcdcd;
+    border-radius: 6px;
+    margin-top: 5px;
+}
+
+.img-plato-carta {
+    display: flex;
+    flex-basis: 25%;
+    justify-content: center;
+    width: 120px;
+    height: 75px;
+    overflow: hidden;
+}
+
+.img-plato-carta img {
+    max-width: 120px;
+    height: 100%; /* Asegura que la imagen llene el contenedor */
+    object-fit: cover; 
+}
+
+.title-plato-carta {
+    border: 1px solid #cac8c8;
+    border-bottom: none;
+    border-top: none;
+    flex-basis: 60%;
+    padding: 0 1rem;
+}
+
+.precio-plato-carta {
+    display: flex;
+    flex-basis: 20%;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center;
+    font-weight: bold;
+    margin-left: 3px;
+    height: 100%;
+    position: relative; /* Añadido */
+}
+
+.quantity-box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.cant {
+    margin-top: 0.4rem; 
+    margin-bottom: 0.6rem;
+    padding: 0.2rem;
+}
+
+.value-input {
+    justify-content: center;
+}
+
+.quantity-input {
+    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.3rem;
+    margin: 0 0.5rem;
+    margin-left: 0;
+}
+
+.description {
+    font-size: 12px;
+}
+
+
+@media (max-width:680px) {
+    .column-2.carta{
+        grid-template-columns: repeat(1,1fr);
+    }
+    .wrap-title-section {
+        margin-top: 5rem;
+    }
+}

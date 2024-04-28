@@ -1,0 +1,82 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %}branches info{% endblock %}
+
+{% block static %} <link rel="stylesheet" href="{% static 'css/database/orders/orders.css' %}"> {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_branches' restaurant.slug %}"> Go back into branches info </a>
+
+    <!-- Pongo esto para pasar info al JavaScript -->
+    <p id="ajax-url" style="display: none;">{% url 'db_orders' restaurant.slug branch.slug %}</p>
+
+    {% for order_id, value in orders.items %}
+        <h3>Order ID: {{order_id}}</h3>
+        {% if value.info.waiting_waiter %}
+            <h4 id="{{order_id}}-waiting-waiter-true">The client is waiting a waiter</h4>
+            <p id="{{order_id}}-waiting-waiter-info">Waiting waiter: {{value.info.waiting_waiter}}</p>
+            <input type="checkbox" id="{{order_id}}-waiting-waiter" class="waiting-waiter" checked>
+        {% else %}
+            <h4 id="{{order_id}}-waiting-waiter-true" class="no-display">The client is waiting a waiter</h4>
+            <p id="{{order_id}}-waiting-waiter-info">Waiting waiter: {{value.info.waiting_waiter}}</p>
+            <input type="checkbox" id="{{order_id}}-waiting-waiter" class="waiting-waiter">
+        {% endif %} 
+        <p>Ordered from: {{value.info.ordered_from}}</p>
+        {% if value.info.decision_made %}
+            <p id="{{order_id}}-paid-info">Paid: {{value.info.paid}}</p>
+            {% if value.info.paid %}
+                <input type="checkbox" id="{{order_id}}-paid" class="paid" checked>
+            {% else %}
+                <input type="checkbox" id="{{order_id}}-paid" class="paid">
+            {% endif %}
+            <p>Pay later: {{value.info.pay_later}}</p>
+        {% else %}
+            <p>Waiting the client to choose the payment method</p>
+        {% endif %}
+        <p id="{{order_id}}-delivered-info">Delivered: {{value.info.delivered}}</p>
+        {% if value.info.delivered %}
+            <input type="checkbox" id="{{order_id}}-delivered" class="delivered" checked>
+        {% else %}
+            <input type="checkbox" id="{{order_id}}-delivered" class="delivered">
+        {% endif %}
+        <p>Created: {{value.info.created}}</p>
+
+        {% for item_id, value1 in value.items.items %}    
+            <h4> Menu Item: {{value1.info.menu_item.name}} </h4>
+            <p> Quantity: {{value1.info.quantity}} </p>
+
+            <h5> Ingredients added: </h5>
+            {% for added_slug, added in value1.ingredients_added.items %}
+                <p>{{added_slug}}</p>
+                <p>Quantity: {{added.quantity}}</p>
+            {% empty %}
+                <p> No ingredients were added </p>
+            {% endfor %}
+
+            <h5> Ingredients removed: </h5>
+            {% for removed_slug, removed in value1.ingredients_removed.items %}
+                <p>{{removed_slug}}</p>
+                <p>Quantity: {{removed.quantity}}</p>
+            {% empty %}
+                <p> No ingredients were removed </p>
+            {% endfor %}
+            <p>Observation: {{value1.info.observation}}</p>
+
+        {% empty %}
+            <p>This order does not have any menu item</p>
+        {% endfor %}
+
+    {% empty %}
+        <p>There are no orders yet</p>
+    {% endfor %}
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'js/database/sure_delete.js' %}"></script>
+    <script src="{% static 'js/database/orders/orders.js' %}"></script>
+{% endblock %}

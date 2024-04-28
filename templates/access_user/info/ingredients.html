@@ -1,0 +1,46 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %}restaurant info{% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_home' restaurant.slug %}"> Go back into home </a>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% if ingredients %}
+        {% for ingredient in ingredients %}
+            <h4> Name: {{ ingredient.name }} </h4>
+            <p> Slug: {{ ingredient.slug }}</p>
+            <p> Image: </p>
+            <img src="{{ ingredient.image.url }}" alt="{{ ingredient.image.url }}"> <br>
+            <p> In stock: {{ ingredient.in_stock }}</p>
+            <p> Menu items: </p>
+            <ul>
+                {% for item in ingredient.menuItem.all %}
+                    <li>{{ item.name }}</li>
+                    <a href="#">Edit menu item ingredient</a> <br>
+                    <a href="#">Delete the menu item from this ingredient</a>
+                {% empty %}
+                    <li> This ingredient isn't in any menu item yet </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'edit_ingredient' restaurant.slug ingredient.slug %}"> Edit ingredient </a> <br>
+            <a class="del_btn" href="{% url 'delete_ingredient' restaurant.slug ingredient.slug %}"> Delete ingredient </a> <br>
+        {% endfor %}
+    {% else %}
+        <p>There are not ingredients loaded yet</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'add_ingredient' restaurant.slug %}"> Add ingredient </a>
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/database/sure_delete.js' %}"></script>
+{% endblock %}

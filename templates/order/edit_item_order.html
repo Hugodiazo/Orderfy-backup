@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy - {{ restaurant.name }} {{ branch.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <link rel="stylesheet" href="{% static 'css/order/order.css' %}">
+    <link rel="stylesheet" href="{% static 'css/order/add_item_order.css' %}">
+    <link rel="stylesheet" href="{% static 'css/img_width_200.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'branches' restaurant.slug branch.slug %}" class="boton fa-solid fa-arrow-left"> </a> <h3 class="p">{{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"></h3>
+    </header>
+
+    <section class="section">
+        <br><br>
+            <h3 class="resname"> {{menu_item_order.name}} </h3>
+        <form method="post">
+            {% csrf_token %}
+            <label class="p" for="quantity">Quantity: </label>
+            <input type="number" id="item-quantity" name="quantity" step="0" min="1" max="15" value="{{menu_item_order.quantity}}" required>
+            <br> <br>
+            <!-- si el ingrediente ya fue agregado al item, se muestra la info, sino se pone el input para que el usuario lo edite -->
+            {% for addable_ingredient in addable_ingredients %}
+                {% if addable_ingredient.ingredient.slug in menu_item_order.added %} 
+                    <label class="p" for="add">Add {{addable_ingredient.ingredient.name}}</label>
+                    <input id="add-q-checkbox-{{addable_ingredient.ingredient.slug}}" class="q-checkbox" type="checkbox" id="add" name="add" checked>
+                    <br>
+                    {% for key, value in menu_item_order.added.items %}
+                        {% if key == addable_ingredient.ingredient.slug %}
+                            <label id="add-quantity-{{addable_ingredient.ingredient.slug}}" class="quantity p" for="quantity_added_{{addable_ingredient.ingredient.slug}}">Quantity: </label>
+                            <input id="add-quantity-{{addable_ingredient.ingredient.slug}}" class="quantity q-input" type="number" name="quantity_added_{{addable_ingredient.ingredient.slug}}" value="{{value}}" step="0" min="0" max="15" required>
+                            <p data-unique-price="{{addable_ingredient.price_add}}" data-price="{{addable_ingredient.price_add}}" id="add-ingredient-price-{{addable_ingredient.ingredient.slug}}">{{addable_ingredient.price_add}}$</p>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <label class="p" for="add">Add {{addable_ingredient.ingredient.name}}</label>
+                    <input id="add-q-checkbox-{{addable_ingredient.ingredient.slug}}" class="q-checkbox" type="checkbox" id="add" name="add">
+                    <br>
+                    <label id="add-quantity-{{addable_ingredient.ingredient.slug}}" class="quantity p" for="quantity_added_{{addable_ingredient.ingredient.slug}}">Quantity: </label>
+                    <input id="add-quantity-{{addable_ingredient.ingredient.slug}}" class="quantity q-input" type="number" name="quantity_added_{{addable_ingredient.ingredient.slug}}" step="0" min="0" max="15" required>
+                    <p data-unique-price="{{addable_ingredient.price_add}}" data-price="{{addable_ingredient.price_add}}" id="add-ingredient-price-{{addable_ingredient.ingredient.slug}}">{{addable_ingredient.price_add}}$</p>
+                {% endif %}
+            {% endfor %}
+            <!-- si el ingrediente ya fue sacado al item, se muestra la info, sino se pone el input para que el usuario lo edite -->
+            {% for removable_ingredient in removable_ingredients %}
+                {% if removable_ingredient.ingredient.slug in menu_item_order.removed %} 
+                    <label class="p" for="remove">Remove {{removable_ingredient.ingredient.name}}</label>
+                    <input id="remove-q-checkbox-{{removable_ingredient.ingredient.slug}}" class="q-checkbox" type="checkbox" id="remove" name="remove" checked>
+                    <br>
+                    {% for key, value in menu_item_order.removed.items %}
+                        {% if key == removable_ingredient.ingredient.slug %}
+                            <label id="remove-quantity-{{removable_ingredient.ingredient.slug}}" class="quantity p" for="quantity_removed_{{removable_ingredient.ingredient.slug}}">Quantity: </label>
+                            <input id="remove-quantity-{{removable_ingredient.ingredient.slug}}" class="quantity q-input" type="number" name="quantity_removed_{{removable_ingredient.ingredient.slug}}" value="{{value}}" step="0" min="0" max="15" required>
+                            <p data-unique-price="{{removable_ingredient.price_remove}}" data-price="{{removable_ingredient.price_remove}}" id="remove-ingredient-price-{{removable_ingredient.ingredient.slug}}">{{removable_ingredient.price_remove}}$</p>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <label class="p" for="remove">Remove {{removable_ingredient.ingredient.name}}</label>
+                    <input id="remove-q-checkbox-{{removable_ingredient.ingredient.slug}}" class="q-checkbox" type="checkbox" id="remove" name="remove">
+                    <br>
+                    <label id="remove-quantity-{{removable_ingredient.ingredient.slug}}" class="quantity p" for="quantity_removed_{{removable_ingredient.ingredient.slug}}">Quantity: </label>
+                    <input id="remove-quantity-{{removable_ingredient.ingredient.slug}}" class="quantity q-input" type="number" name="quantity_removed_{{removable_ingredient.ingredient.slug}}" step="0" min="0" max="15" required>
+                    <p data-unique-price="{{removable_ingredient.price_remove}}" data-price="{{removable_ingredient.price_remove}}" id="remove-ingredient-price-{{removable_ingredient.ingredient.slug}}">{{removable_ingredient.price_remove}}$</p>
+                {% endif %}
+            {% endfor %}
+            <label class="p" for="observation">Observation:</label>
+            <br>
+            <textarea class="observation" name="observation" rows="4" cols="50" maxlength="150" placeholder="If you want, you can write an observation to take into account in your order (max 150 characters)">{{menu_item_order.observation}}</textarea>
+            <br>
+            <p data-price="{{menu_item.price}}" id="item-price">{{menu_item_order.total_price}}$</p>
+            <input style="display: none;" id="item-price-input" type="number" step="0.01" name="total_price" value="{{menu_item_order.total_price}}">
+
+            <a class="boton" id="submit" type="submit">Save</a>
+        </form>
+    </section>
+    
+
+    <script src="{% static 'js/order/edit_item_order.js' %}"></script>
+</body>
+</html>

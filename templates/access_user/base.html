@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy DB - {{restaurant.name}} {% block title %} {% endblock %}</title>
+    {% block static %} {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/database/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section class="section">
+        <header class="orderfy">
+            <h3> {{ restaurant.name | upper }} DB HOME </h3>
+            <h3> Welcome {{ user.username }} </h3>
+            <a href="{% url 'db_logout' restaurant.slug %}" class="botres"> Log out </a> 
+            <a href="{% url 'restaurant' restaurant.slug %}" class="botres"> Volver al sitio web </a> 
+        </header>
+    
+    
+        <!-- <p> Name: {{ restaurant.name }} </p>
+        <p> Slug: {{ restaurant.slug }} </p>
+        <p> Logo image: </p>
+        <img src="{{ restaurant.logo.url }}" alt="{{ restaurant.logo.url }}">
+        <p> Principal image: </p>
+        <img src="{{ restaurant.image.url }}" alt="{{ restaurant.image.url }}">
+        <p> Description: {{ restaurant.description }} </p>
+        <p id="pc"> primary color </p> 
+        <p id="sc"> secondary color </p> 
+        
+        Por si queres agregar info del restoran en esta pagina
+    -->
+    
+        <br><br><br>
+        <!-- <hr>  -->
+        {% block content %} {% endblock %}
+        <!-- <hr> -->
+        
+        <footer class="footer"> 
+            <p class="center-content"> All right's reserved: OrderFy </p>
+            {% block script %} {% endblock %} 
+        </footer>
+    </section>
+   
+</body>
+</html>

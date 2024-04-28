@@ -1,0 +1,46 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %} edit {{ category.name }} {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_menu' restaurant.slug branch.slug type.slug %}"> Go back into menu info </a>
+    <br> <br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="type">Type of category:</label>
+        <select id="options" name="type" required>
+            {% for type in types %}
+                {% if type == category.type_of_category %}
+                    <option value="{{ type.slug }}" selected>{{ type.name }}</option>
+                {% else %}
+                    <option value="{{ type.slug }}">{{ type.name }}</option>
+                {% endif %}
+            {% empty %}
+                <p>Something happened at the time of searching the types</p>
+                <option value="{{ category.type_of_category.slug }}">{{ category.type_of_category }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Name" value="{{ category.name }}" required>
+        <br>
+        <br>
+        <label for="slug">Slug:</label>
+        <input type="text" id="slug" name="slug" placeholder="Slug" value="{{ category.slug }}" required>
+        <br>
+        <br>
+        <button type="submit" name="action" value="save_and_continue_editing">Save and continue editing</button>
+        <button type="submit" name="action" value="save_and_add_another">Save and add another</button>
+        <button type="submit" name="action" value="save">Save</button> 
+    </form>
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}

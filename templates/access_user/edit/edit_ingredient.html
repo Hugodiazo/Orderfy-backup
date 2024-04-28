@@ -1,0 +1,42 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %} add new menu item {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_ingredients' restaurant.slug %}"> Go back into ingredients info </a>
+    <br>
+
+    <h4> {{menu_item.name}} </h4>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p> General information of the ingredient: </p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Name" value="{{ ingredient.name }}" required>
+        <br>
+        <label for="slug">Slug:</label>
+        <input type="text" id="slug" name="slug" placeholder="Slug" value="{{ ingredient.slug }}" required>
+        <br>
+        <label for="image">Image:</label>
+        <br>
+        <img src="{{ ingredient.image.url }}" alt="{{ ingredient.image.url }}">
+        <br>
+        <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png, .gif, .bmp, .avif">
+        <br> <br>
+        <label for="in_stock">In stock: </label>
+        <input type="checkbox" id="in_stock" name="in_stock" {% if ingredient.in_stock %} checked {% endif %}>
+        <br> <br>
+        <br>
+        <button type="submit" name="action" value="save_and_continue_editing">Save and continue editing</button>
+        <button type="submit" name="action" value="save_and_add_another">Save and add another</button>
+        <button type="submit" name="action" value="save">Save</button>    
+    </form>
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}

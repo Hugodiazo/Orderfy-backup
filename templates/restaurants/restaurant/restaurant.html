@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+    <title>Orderfy - {{ restaurant.name }}</title>
+    <style>
+        :root{
+            --primary-color: {{ restaurant.primary_color }};
+            --secondary-color: {{ restaurant.secondary_color }};
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="{% static 'css/restaurants/restaurant/restaurant.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+</head>
+<body>
+    <section class="section">
+        <a href="{% url 'restaurants' %}" class="boton fa-solid fa-arrow-left">  </a>
+    <h2 class="resname1"> {{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"> </h2>
+    <div class="resimg-cont"><img class="resimg"src="{{ restaurant.image.url }}" alt="{{ restaurant.name }} image"></div>
+    <p> {{ restaurant.description }} </p>
+    <!-- <p id="pc"> primary color </p> esta en el css -->
+    <!-- <p id="sc"> secondary color </p> esta en el css -->
+    <!-- <p> Quantity of branches: {{ restaurant.q_branches }} </p> POR SI QUERES PONERLO EN ALGUN LADO -->
+
+    <!-- Si hay muchas sucursales te pregunta en cual estas y muestra todas con su link para que elijas -->
+    {% if branches.count > 1 %} 
+        <br>
+        <h3 class="p"> Sucursales </h3>
+        <br>
+        {% for branch in branches %}
+            <h4 class="p">{{ branch.name }}</h4>
+            <div class="resimg-cont"><img class="resimg1" src="{{ branch.image.url }}" alt="{{ branch.name }} image"></div>
+            <p>{{ branch.ubication }}</p>
+            <a class="botres" href="{% url 'branches' restaurant.slug branch.slug %}"> Go to the menu </a>
+            <br><br><br><br>
+        {% endfor %}
+        
+    <!-- Si hay una sola muestra su info -->
+    {% else %}
+        <p> {{ branches.first.name }} </p>
+        <img src="{{ branches.first.image.url }}" alt="{{ branches.first.name }} image">
+        <p>{{ branches.first.ubication }}</p>
+        <!-- si hay muchos tipos de categoria, muestra la info de todos con su link -->
+        {% if types_of_category.first %}
+            {% for type_of_category in types_of_category %}
+                <h4 class="p"> {{ type_of_category.name }} </h4>
+                <img src="{{ type_of_category.image.url }}" alt="{{ type_of_category.name }} image">
+                <a href="{% url 'types' restaurant.slug branches.first.slug type_of_category.slug %}"> Go to this type of category </a> 
+            {% endfor %} 
+        <!-- si hay un solo tipo de categoria muestra directamente el menu -->
+        {% else %}
+            {% for key, val in menu_items.items %}
+                <h2 class="p"> {{ key }} </h2>
+                {% for menu_item in val %}
+                    {% if menu_item.in_stock %}
+                        <h3 class="p"> {{ menu_item.name }} </h3>
+                        <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }} image">
+                        <p class="description"> {{ menu_item.description }} </p>
+                        <h5 class="p"> {{ menu_item.price }}$ </h5>
+                        <p> Ingredients: </p>
+                        <ul>
+                            {% for ingredient in menu_item.Ingredient.all %}
+                                <li class="p">{{ ingredient.name }}</li>
+                            {% empty %}
+                                <li class="p"> This menu item does not have any ingredient </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    </section>
+    
+
+</body>
+</html>

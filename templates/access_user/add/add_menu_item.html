@@ -1,0 +1,48 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %} add new menu item {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_menu' restaurant.slug branch.slug type.slug %}"> Go back into menu info </a>
+    <br><br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="type">Category:</label>
+        <select id="options" name="type" readonly>
+            <option value="{{ category.slug }}" selected>{{ category.name }}</option>
+        </select>
+        <br><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Name" required>
+        <br>
+        <label for="description">Description:</label>
+        <br>
+        <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter your description here..."></textarea>
+        <br>
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png, .gif, .bmp">
+        <br> <br>
+        <label for="price">Price: </label>
+        <input type="number" id="price" name="price" step="0.01" min="0" max="999999" required>
+        <br>
+        <label for="in_stock">In stock: </label>
+        <input type="checkbox" id="in_stock" name="in_stock" checked>
+        <br>
+
+        <br>
+        <button type="submit" name="action" value="save_and_continue_editing">Save and continue editing</button>
+        <button type="submit" name="action" value="save_and_add_another">Save and add another</button>
+        <button type="submit" name="action" value="save">Save</button> 
+    </form>
+
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy - Client Info</title>
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <link rel="stylesheet" href="{% static 'css/order/order.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <a href="{% url 'order' restaurant_slug branch_slug %}" class="boton fa-solid fa-arrow-left"> </a> <h3 class="p">{{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"></h3>
+    </header>
+    <!-- <h4>We have some questions to you!</h4> -->
+    <!-- <p>Is quicker than you think</p> -->
+
+    <section class="section">
+        <form method="post" class="form">
+            {% csrf_token %}
+
+            <h4 class="resname1">Ingrese sus datos para poder tomar su pedido: </h4>
+            <br>
+            <label class="p" for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Name" maxlength="100" required> <br><br>
+            <label class="p" for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Email" required><br><br>
+            <label class="p" for="age">Age: </label>
+            <input type="number" name="age" step="0" min="1" max="110" value="1" required>
+    
+
+           <!-- deberiamos enviar nombre, (mail), MESA,  -->
+
+            <br><br>
+            <button id="verPedidoBtn" id="submit" type="submit">Enviar</button>
+        </form>
+    </section>
+    
+
+    <script src="{% static 'js/order/client_info.js' %}"></script>
+</body>
+</html>

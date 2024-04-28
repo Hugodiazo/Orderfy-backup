@@ -1,0 +1,48 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %}branches info{% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_home' restaurant.slug %}" class="boton fa-solid fa-arrow-left"> </a>
+    <br><br>
+    <div class="center-content">
+        <h3 class="p"> Sucursales </h3>
+    </div>
+    <br>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% if branches %}
+        {% for branch in branches %}
+        <div class="info-sucu">
+            <h4> Nombre: {{ branch.name }} </h4>
+            <p> Ubicación: {{ branch.ubication }}</p>
+            <p> Slug: {{ branch.slug }} </p>
+            <p> Imagen: </p>
+        </div>
+            <div class="resimg-cont"> <img src="{{ branch.image.url }}" class="resimg1" alt="{{ branch.image.url }}"> </div> 
+            <div class="edit-res">
+                <a href="{% url 'db_orders' restaurant.slug branch.slug %}" class="boton"> View orders </a> <br>
+                <a href="{% url 'db_types' restaurant.slug branch.slug %}" class="boton"> View types of categories info </a> <br>
+                <a href="{% url 'edit_branch' restaurant.slug branch.slug %}" class="boton"> Edit branch </a> <br>
+                <a class="del_btn boton" href="{% url 'delete_branch' restaurant.slug branch.slug %}"> Delete branch </a>
+            </div>
+            
+            <br><br><br>
+        {% endfor %}
+    {% else %}
+        <p>There are not branches loaded yet</p>
+    {% endif %}
+    <a class="nuevo" href="{% url 'add_branch' restaurant.slug %}"> Nueva sucursal + </a>
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    <br><br>
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/database/sure_delete.js' %}"></script>
+{% endblock %}

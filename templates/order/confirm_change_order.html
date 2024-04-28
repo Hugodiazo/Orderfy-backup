@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy - Confirm change order</title>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <p>Are you sure you wanna delete your order from {{old_branch.name}} of the restaurant {{old_branch.restaurant.name}} and save the item {{new_menu_item.name}} in a new order of the branch {{new_branch.name}}?</p>
+        <p>Your old order was: </p>
+        <h4> Order from {{old_branch.name}} </h4>
+        {% for key, value in order.menu_items.items %}
+            {% for key1, value1 in old_menu_items.items %}
+                {% if key1 == key %}
+                    <h4>{{value1.name}}</h4>
+                    <p>{{ value1.description }}</p>
+                    <img src="{{ value1.image.url }}" alt="{{value1.name}} image">
+                {% endif %}
+            {% endfor %}
+            <p> Quantity: {{ value.quantity }} </p>
+            {% if value.added %}
+                <p>Ingredients added: </p>
+                {% for key1, value1 in value.added.items %}
+                    <p>{{key1}}: {{value1}}</p>
+                {% endfor %}
+            {% endif %}
+            {% if value.removed %}
+                <p>Ingredients removed: </p>
+                {% for key1, value1 in value.removed.items %}
+                    <p>{{key1}}: {{value1}}</p>
+                {% endfor %}
+            {% endif %}
+            <p>{{value.observation}}</p>
+        {% empty %}
+            <p>The order is empty at the moment</p>
+        {% endfor %}
+
+        <br>
+        <button type="submit" name="action" value="yes">Yes</button>
+        <button type="submit" name="action" value="no">No</button>  
+    </form>
+</body>
+</html>

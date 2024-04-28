@@ -1,0 +1,89 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %} edit {{ branch.name }} {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_home' restaurant.slug %}" class="boton fa-solid fa-arrow-left"> </a>
+    <br><br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="table-container">
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="name">Nombre:</label>
+                </div>
+                <div class="table-cell">
+                    <input type="text" id="name" name="name" placeholder="Nombre" value="{{ restaurant.name }}" required>
+                </div>
+            </div>   
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="slug">Slug:</label>
+                </div>
+                <div class="table-cell">
+                    <input type="text" id="slug" name="slug" placeholder="slug" value="{{ restaurant.slug }}" required>
+                </div>
+            </div> 
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="description">Descripción:</label>
+                </div>
+                <div class="table-cell">
+                    <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter your description here...">{{ restaurant.description }}</textarea>
+                </div>
+            </div>  
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="logo">Logo:</label>
+                </div>
+                <div class="table-cell">
+                    <img src="{{ restaurant.logo.url }}" alt="{{ restaurant.logo.url }}">
+                    <input type="file" id="logo" class="custom-file-upload" name="logo" accept=".jpg, .jpeg, .png, .gif, .bmp, .avif" />
+                </div>
+            </div>  
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="image">Imagen:</label>
+                </div>
+                <div class="table-cell">
+                    <img src="{{ restaurant.image.url }}" alt="{{ restaurant.image.url }}">
+                    <input type="file" id="image" class="custom-file-upload" name="Imagen" accept=".jpg, .jpeg, .png, .gif, .bmp, .avif">
+                </div>
+            </div>  
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="primary_color" required>Color primario:</label>
+                </div>
+                <div class="table-cell">
+                    <input type="color" id="primary_color" name="primary_color" placeholder="En hexadecimal" value="{{ restaurant.primary_color }}" required>
+                </div>
+            </div>  
+            <div class="table-row">
+                <div class="table-cell">
+                    <label for="secondary_color" required>Color secundario:</label>
+                </div>
+                <div class="table-cell">
+                    <input type="color" id="secondary_color" name="secondary_color" placeholder="En hexadecimal" value="{{ restaurant.secondary_color }}" required>
+                </div>
+            </div>  
+        </div>
+        
+
+        <br>
+        <!-- <button type="submit" name="action" value="save_and_continue_editing" >Save and continue editing</button> -->
+        <button type="submit" name="action" value="save" class="nuevo">Guardar y volver</button> 
+        <br><br><br>
+    </form>
+
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+

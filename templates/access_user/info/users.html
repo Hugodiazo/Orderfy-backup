@@ -1,0 +1,42 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %}restaurant info{% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_home' restaurant.slug %}" class="boton fa-solid fa-arrow-left"> </a>
+    <br><br><br>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% if users %}
+        {% for user in users %}
+        <div class="table-container"> 
+            <div class="table-row">
+                <div class="table-cell">
+                    <h4> Usuario: {{ user.username }} </h4>
+                    <p> Nombre: {{ user.first_name }} {{ user.last_name }}</p>
+                    <p> Email: {{ user.email }} </p>
+                </div>
+                <div class="table-cell">
+                    <a href="{% url 'edit_user' restaurant.slug user.username %}" class="boton"> Editar usuario </a> <br> <br>
+                    <a class="del_btn boton" href="{% url 'delete_user' restaurant.slug user.username %}"> Eliminar usuario </a> <br>
+                </div>
+            </div>     
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay usuarios cargados todavia</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'db_register' restaurant.slug %}" class="nuevo"> Nuevo usuario </a>
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/database/sure_delete.js' %}"></script>
+{% endblock %}

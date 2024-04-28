@@ -1,0 +1,67 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %} add new menu item {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_menu' restaurant.slug branch.slug type.slug %}"> Go back into menu info </a>
+    <br>
+
+    <h4> {{menu_item.name}} </h4>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p> General information of the ingredient: </p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Name" value="{{ ingredient.name }}" required>
+        <br>
+        <label for="slug">Slug:</label>
+        <input type="text" id="slug" name="slug" placeholder="Slug" value="{{ ingredient.slug }}" required>
+        <br>
+        <label for="image">Image:</label>
+        <br>
+        <img src="{{ ingredient.image.url }}" alt="{{ ingredient.image.url }}">
+        <br>
+        <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png, .gif, .bmp, .avif">
+        <br> <br>
+        <label for="in_stock">In stock: </label>
+        <input type="checkbox" id="in_stock" name="in_stock" {% if ingredient.in_stock %} checked {% endif %}>
+        <br> <br>
+
+        <p> Specific of this menu item: </p>
+        <label for="removable">Removable: </label>
+        <input type="checkbox" id="removable" name="removable" {% if item_ingredient.removable %} checked {% endif %}>
+        <em> This checkbox is used to let the user remove the ingredient of the menu item </em> 
+        <br>
+        <label class="r_price_info" for="remove_price">Remove price: </label>
+        <input class="r_price_info" type="number" id="remove_price" name="remove_price" step="0.01" min="0" max="999999" value="{{ item_ingredient.price_remove }}">
+        <em class="r_price_info"> This input is the price that is taken of the item price if the ingredient has been removed </em>
+        <br>
+        <label for="addable">Addable: </label>
+        <input type="checkbox" id="addable" name="addable" {% if item_ingredient.addable %} checked {% endif %}>
+        <em> This checkbox is used to let the user add an extra of this ingredient to the menu item </em> 
+        <br>
+        <label class="a_price_info" for="add_price">Add price: </label>
+        <input class="a_price_info" type="number" id="add_price" name="add_price" step="0.01" min="0" max="999999" value="{{ item_ingredient.price_add }}">
+        <em class="a_price_info"> This input is the price that is added to the item price if an extra of this ingredient has been added </em>
+        <br>
+
+        <br>
+        <button type="submit" name="action" value="save_and_continue_editing">Save and continue editing</button>
+        <button type="submit" name="action" value="save_and_add_another">Save and add another</button>
+        <button type="submit" name="action" value="save">Save</button> 
+    </form>
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/database/edit/edit_item_ingredient.js' %}"></script>
+{% endblock %}

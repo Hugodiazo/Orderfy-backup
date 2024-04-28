@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy - {{ restaurant.name }} {{ branch.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurant/branches/types.css' %}">
+    <link rel="stylesheet" href="{% static 'css/order/add_item_order.css' %}">
+    <link rel="stylesheet" href="{% static 'css/order/order.css' %}">
+    <link rel="stylesheet" href="{% static 'css/img_width_200.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Pongo esto para pasar info al JavaScript -->
+    <p id="ajax-url" style="display: none;">{% url 'order' restaurant.slug branch.slug %}</p>
+    <header>
+        <a href="{% url 'branches' restaurant.slug branch.slug %}" class="boton fa-solid fa-arrow-left"> </a> <h3 class="p">{{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"></h3>
+        <!-- deberia volver a la parte de la carta no de los distintos menus -->
+    </header>
+
+    <section class="section">
+        <!-- {% for message in messages %}
+            <p class="resname">"{{message}}"</p>
+        {% endfor %} -->
+         
+        <br><br>
+        <i class="resname"> {{branch.name}} ,</i>
+        <i class="p"> Mesa:  </i>
+        <!-- que aparezca el numero de mesa -->
+
+
+        <div class="wrap">
+            {% for key, value in order.menu_items.items %}
+            <div id="{{key}}">
+                <div class="wrap column-2 carta">
+                    <div class="plato-carta" >
+                        <div class="img-plato-carta">
+                            {% for key1, value1 in menu_items.items %}
+                                {% if key1 == key %}
+                                    <img src="{{ value1.image.url }}" alt="{{value1.name}} image">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="title-plato-carta">
+                            {% for key1, value1 in menu_items.items %}
+                                {% if key1 == key %}
+                                    <h5 class="p">{{value1.name}}</h5>
+                                {% endif %}
+                            {% endfor %}
+                            {% if value.added %}
+                                <p class="p-chico">Ingredients added: </p>
+                                {% for key1, value1 in value.added.items %}
+                                    <p class="added-ingredient p-chico" >{{key1}}: {{value1}}</p>
+                                {% endfor %}
+                            {% endif %}
+                            <!-- Si hay ingredientes removidos los muestra -->
+                            {% if value.removed %}
+                                <p class="p-chico">Ingredients removed: </p>
+                                {% for key1, value1 in value.removed.items %}
+                                    <p class="removed-ingredient p-chico" >{{key1}}: {{value1}}</p>
+                                {% endfor %}
+                            {% endif %}
+                            <p class="p-chico">{{value.observation}}</p>
+        
+                            {% for key1, value1 in order_items_json.items %}
+                                {% if key1 == key %}
+                                <div class="quantity-container">
+                                    <button data-item="{{value1}}" class="decrease-btn">-</button>
+                                    <p id="{{value1}}-quantity"> {{ value.quantity }} </p>
+                                    <button data-item="{{value1}}" class="increase-btn">+</button>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="precio-plato-carta">
+                            {% for key1, value1 in order_items_json.items %}
+                                {% if key1 == key %}
+                                    <p id="{{value1}}-price" class="item-price precio-verPed">${{value.total_price|floatformat:2}}</p>
+                                    <a href="{% url 'edit_item_order' restaurant.slug branch.slug value1 %}">Edit</a> <br>
+                                    <a  class="boton-x fa-solid fa-x" href="{% url 'delete_item_order' restaurant.slug branch.slug value1 %}"></a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>    
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        {% empty %}
+            <p>The order is empty at the moment</p>
+        {% endfor %}
+
+        <div class="espacio-final"></div>
+
+        <div class="confirm-order"> 
+            <p id="total-price">Total price: </p>
+            {% if order.menu_items %}
+                <a href="{% url 'client_info' branch.slug %}" id="confirm-order-Btn">Confirm order</a> 
+                <a class="del_btn boton"  href="{% url 'reset_order' restaurant.slug branch.slug %}">Reset order</a>
+            {% endif %}
+        </div>
+        
+    </section>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'js/order/order.js' %}"></script>
+    <script src="{% static 'js/order/total_price.js' %}"></script>
+    <script src="{% static 'js/database/sure_delete.js' %}"></script>
+</body>
+</html>

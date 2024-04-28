@@ -1,0 +1,70 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %}Restaurant info{% endblock %}
+
+{% block static %}
+{% load static %}
+    <style>
+        :root{
+            --primary-color: {{ restaurant.primary_color }};
+            --secondary-color: {{ restaurant.secondary_color }};
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/database/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+
+{% endblock %}
+
+{% block content %}
+    <h4> Nombre: {{ restaurant.name }} </h4>
+    <h4> Slug: {{ restaurant.slug }} </h4>
+    <!-- <div>
+        <p> Imagen logo: </p> <img src="{{ restaurant.logo.url }}" alt="{{ restaurant.logo.url }}">
+        <p> Imagen principal: </p> <img src="{{ restaurant.image.url }}" alt="{{ restaurant.image.url }}">
+    </div> -->
+
+    <br>
+    <div class="table-container">
+        <div class="table-row">
+            <div class="table-cell">
+                <p>Imagen logo:</p>
+            </div>
+            <div class="table-cell">
+                <p>Imagen principal:</p>
+            </div>
+        </div>
+        <div class="table-row">
+            <div class="table-cell">
+                <img src="{{ restaurant.logo.url }}" alt="{{ restaurant.logo.url }}">
+            </div>
+            <div class="table-cell">
+                <img src="{{ restaurant.image.url }}" alt="{{ restaurant.image.url }}">
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <p> Descripción: {{ restaurant.description }} </p>
+    <br>
+    <p> Color primario: </p> <div class="color1"></div> <!-- esta en el css -->
+    <br>
+    <p> Color secundario: </p> <div class="color2"></div> <!-- esta en el css -->
+    <br>
+    <p> Cantidad de sucursales: {{ restaurant.q_branches }} </p>
+    <br>
+
+    <div class="edit-res">
+        <a href="{% url 'db_branches' restaurant.slug %}" class="botres">Sucursales</a> 
+        <br>
+        <a href="{% url 'edit_restaurant' restaurant.slug %}" class="botres"> Restaurante</a> 
+        <!-- Pasar parámetros adicionales al bloque del template base -->
+        {{ block.super }}
+        <br>
+        <a href="{% url 'db_ingredients' restaurant.slug %}" class="botres">Ingredientes</a>
+        <br>
+        <a href="{% url 'db_users' restaurant.slug %}" class="botres"> Usuarios</a> 
+    </div>
+    
+    <br>
+{% endblock %}

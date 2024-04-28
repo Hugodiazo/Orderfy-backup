@@ -1,0 +1,59 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %} edit {{ menu_item.name }} {% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_menu' restaurant.slug branch.slug type.slug %}"> Go back into menu info </a>
+    <br> <br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="category">Category:</label>
+        <select id="options" name="category" required>
+            {% for category in categories %}
+                {% if category == menu_item.category %}
+                    <option value="{{ category.slug }}" selected>{{ category.name }}</option>
+                {% else %}
+                    <option value="{{ category.slug }}">{{ category.name }}</option>
+                {% endif %}
+            {% empty %}
+                <p>Something happened at the time of searching the categories</p>
+                <option value="{{ menu_item.category.slug }}">{{ menu_item.category }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Name" value="{{ menu_item.name }}" required>
+        <br>
+        <label for="description">Description:</label>
+        <br>
+        <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter your description here...">{{ menu_item.description }}</textarea>
+        <br>
+        <label for="image">Image:</label>
+        <br>
+        <img src="{{ menu_item.image.url }}" alt="{{ menu_item.image.url }}">
+        <br>
+        <input type="file" id="image" name="image" accept=".jpg, .jpeg, .png, .gif, .bmp, .avif">
+        <br> <br>
+        <label for="price">Price: </label>
+        <input type="number" id="price" name="price" step="0.01" min="0" max="999999" value="{{ menu_item.price }}" required>
+        <br>
+        <label for="in_stock">In stock: </label>
+        <input type="checkbox" id="in_stock" name="in_stock" {% if menu_item.in_stock %} checked {% endif %}>
+        <br>
+
+        <br>
+        <button type="submit" name="action" value="save_and_continue_editing">Save and continue editing</button>
+        <button type="submit" name="action" value="save_and_add_another">Save and add another</button>
+        <button type="submit" name="action" value="save">Save</button> 
+    </form>
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}

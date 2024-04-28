@@ -1,0 +1,60 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %}menu items info{% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_types' restaurant.slug branch.slug %}"> Go back into types info </a>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% if menu_items %}
+        {% for key, val in menu_items.items %}
+            <h4> Category name: {{ key.name }} </h4>
+            <p> Category slug: {{ key.slug }} </p>
+            <a href="{% url 'edit_category' restaurant.slug branch.slug type.slug key.slug %}"> Edit category </a> <br>
+            <a class="del_btn" href="{% url 'delete_category' restaurant.slug branch.slug type.slug key.slug %}"> Delete category</a> 
+            {% for menu_item in val %}
+                <h5> Name: {{ menu_item.name }} </h5>
+                <p> Principal image: </p>
+                <img src="{{ menu_item.image.url }}" alt="{{ menu_item.image.url }}">
+                <p> Description: {{ menu_item.description }} </p>
+                <p> Ingredients: </p>
+                    <ul>
+                        {% for ingredient in menu_item.Ingredient.all %}
+                            <li>{{ ingredient.name }}</li> 
+                            <a href="{% url 'edit_item_ingredient' restaurant.slug branch.slug type.slug menu_item.id ingredient.slug %}">Edit ingredient</a>
+                            <br>
+                            <a class="del_btn" href="{% url 'delete_item_ingredient' restaurant.slug branch.slug type.slug menu_item.id ingredient.slug %}"> Delete the ingredient from this menu item </a>
+                            <br>
+                        {% empty %}
+                            <li> This menu item does not have any ingredient </li>
+                        {% endfor %}
+                        <a href="{% url 'add_item_ingredient' restaurant.slug branch.slug type.slug menu_item.id %}"> Add new menu item ingredient </a>
+                      </ul>
+                <p> Price: {{ menu_item.price }}$ </p>
+                <p> In stock: {{ menu_item.in_stock }} </p>
+                <a href="{% url 'edit_menu_item' restaurant.slug branch.slug type.slug menu_item.id %}"> Edit menu item </a>  <br>
+                <a class="del_btn" href="{% url 'delete_menu_item' restaurant.slug branch.slug type.slug menu_item.id %}">Delete menu item</a>
+            {% endfor %}
+            <br><br>
+            <a href="{% url 'add_menu_item' restaurant.slug branch.slug type.slug key.slug %}">Add new menu item</a> 
+        {% endfor %}
+        <br> <br>
+        <a href="{% url 'add_category' restaurant.slug branch.slug type.slug %}">Add new category</a>
+    {% else %}
+        <p> There are not menu items loaded yet </p><br>
+        <a href="{% url 'add_category' restaurant.slug branch.slug type.slug %}">Add new category</a>
+    {% endif %}
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/database/sure_delete.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'access_user/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_users' restaurant.slug %}"> Go back into users info </a> <br><br>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Username" required><br>
+        <label for="first_name">First name:</label>
+        <input type="text" id="first_name" name="first_name" placeholder="First name" required><br>
+        <label for="last_name">Last name:</label>
+        <input type="text" id="last_name" name="last_name" placeholder="Last name" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Email" required><br>
+        <label for="password1">Password:</label>
+        <input type="password" id="password1" name="password1" placeholder="Password" required><br>
+        <label for="password2">Confirm Password:</label>
+        <input type="password" id="password2" name="password2" placeholder="Password" required><br>
+        <br>
+        <button type="submit" name="action" value="save_and_continue_editing">Sign up and continue editing</button>
+        <button type="submit" name="action" value="save_and_add_another">Sign up and add another</button>
+        <button type="submit" name="action" value="save">Sign up</button> 
+    </form>
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}

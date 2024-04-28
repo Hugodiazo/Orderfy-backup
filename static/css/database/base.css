@@ -1,0 +1,144 @@
+#pc{
+    background-color: var(--primary-color);
+}
+
+#sc{
+    background-color: var(--secondary-color);
+}
+
+img{
+    width: 200px;
+}
+
+:root{
+    --background: #F4F6FC;
+    --backsec1: #e7e9ef;
+    --backsec2: #F4F6FC;
+    --logoGreen: #079F56 ;
+    --letras: #232323;
+    --botones: #d3d0d0;
+}
+
+.table-container {
+    display: table;
+    width: 60%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.table-row {
+    display: table-row;
+    height: 50px;
+}
+
+.table-cell {
+    display: table-cell;
+    padding: 7px;
+    border: 1px solid #ccc;
+    text-align: center; /* Centra el contenido horizontalmente */
+    vertical-align: middle; /* Centra el contenido verticalmente */
+}
+
+.table-cell input[type="text"] {
+    width: 250px; /* Ajusta el ancho según sea necesario */
+    height: 26px; /* Ajusta la altura según sea necesario */
+    font-size: 16px; /* Ajusta el tamaño de la fuente según sea necesario */
+}
+.table-cell input {
+    background-color: var(--background);
+    border: 1.5px solid #ccc;
+    border-radius: 5px;
+}
+.table-cell textarea {
+    background-color: var(--background);
+    border: 1.5px solid #ccc;
+    border-radius: 5px;
+}
+
+.table-cell p {
+    margin: 0; /* Elimina el margen de los párrafos */
+}
+
+.table-cell img {
+    max-width: 100px; /* Ajusta el ancho máximo de las imágenes según tu diseño */
+    height: auto;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    width: 100%;
+    height: 50px; /* Altura del footer */
+    background-color: #f5f5f5;
+    text-align: center;
+    line-height: 50px; /* Centrar verticalmente el texto */
+}
+
+.color1 {
+    display: block;
+    padding: 6px 12px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    /* border-color: var(--logoGreen); */
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: background-color 0.3s;
+}
+
+.color2 {
+    display: block;
+    padding: 6px 12px;
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    /* border-color: var(--logoGreen); */
+    border-radius: 5px;
+    margin-top: 5px;
+    transition: background-color 0.3s;
+}
+
+.edit-res {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.edit-res a {
+    margin: 15px; 
+}
+
+.nuevo {
+    position: fixed;
+    bottom: 55px;
+    text-decoration: none;
+    right: 30px;
+    padding: 10px 20px;
+    background-color: var(--logoGreen);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+}
+
+.info-sucu {
+    margin-left: 300px;
+}
+
+
+
+.custom-file-upload input[type="file"] {
+    display: flex;
+    flex-direction: column;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 4px 8px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+
+

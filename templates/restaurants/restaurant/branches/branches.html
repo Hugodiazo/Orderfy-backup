@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy - {{restaurant.name}}</title>
+    <!-- <link rel="stylesheet" href="{% static 'css/restaurants/restaurant/branches/styles.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 
+        POR SI QUERES PONER INFO DEL RESTORAN EN ESTA PAGINA    
+    <h2> {{ restaurant.name }} </h2>
+    <img src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo">
+    <img src="{{ restaurant.image.url }}" alt="{{ restaurant.name }} image">
+    <p> {{ restaurant.description }} </p>
+    <p id="pc"> primary color </p> 
+    <p id="sc"> secondary color </p> 
+    <p> Quantity of branches: {{ restaurant.q_branches }} </p> -->
+     <header>
+        <a href="{% url 'restaurant' restaurant.slug %}" class="boton fa-solid fa-arrow-left"> </a> <h3 class="p">   {{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"></h3>
+    </header>
+
+    {% if order.menu_items %}
+        <a href="{% url 'order' restaurant.slug branch.slug %}">
+            <button id="verPedidoBtn">Ver mi pedido</button>
+        </a>
+    {% endif %}
+    
+    <section class="section">
+            <h3 class="resname" >{{ branch.name }}</h3>
+        <!-- <div class="resimg-cont"><img class="resimg" src="{{ branch.image.url }}" alt="{{ branch.slug }} image"></div> -->
+        <p>{{ branch.ubication }}</p>
+
+        {% if types_of_category %}
+            {% if types_of_category.count > 1 %}
+                {% for type in types_of_category %}
+                    <br>
+                    <h3 class="p">{{ type.name }}</h3>
+                    <div class="resimg-cont"><img class="resimg" src="{{ type.image.url }}" alt="{{ type.name }} image"></div>
+                    <a class="botres" href="{% url 'types' restaurant.slug branch.slug type.slug %}"> Go to this category </a>
+                    <br>
+                {% endfor %}
+            {% else %}
+                <h4>{{ types_of_category.first.name }}</h4>
+                <img src="{{ types_of_category.first.image.url }}" alt="{{ types_of_category.first.name }} image">
+                {% if menu_items %}
+                    {% for key, val in menu_items.items %}
+                        <h4> {{ key }} </h4>
+                        {% for menu_item in val %}
+                            {% if menu_item.in_stock %}
+                                <h5> {{ menu_item.name }} </h5>
+                                <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }} image">
+                                <p > {{ menu_item.description }} </p>
+                                <h5> {{ menu_item.price }}$ </h5>
+                                <p> Ingredients: </p>
+                                <ul>
+                                    {% for ingredient in menu_item.Ingredient.all %}
+                                        <li>{{ ingredient.name }}</li>
+                                    {% empty %}
+                                        <li> This menu item does not have any ingredient </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <p> There are not menu items available at the moment </p>
+                    <p> Talk with somebody in charge </p>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <p> There are not types of category available at the moment </p>
+            <p> Talk with somebody in charge </p>
+        {% endif %}
+    </section>
+    
+</body>
+</html>

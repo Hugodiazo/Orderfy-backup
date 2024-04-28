@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orderfy - Restaurants</title>
+
+    {% for restaurant in restaurants %}
+        <style>
+            :root{
+                --{{ restaurant.slug }}-primary-color: {{ restaurant.primary_color }};
+                --{{ restaurant.slug }}-secondary-color: {{ restaurant.secondary_color }};
+            }
+        </style>
+    {% endfor %}
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+    
+</head>
+
+<body>
+    <header class="orderfy">
+        <div class="center-content">
+        <h2> Orderfy <img class="logo" src="media/Captura de Pantalla 2024-02-23 a la(s) 17.16.39.png" alt=""></h2>
+        </div>    
+    </header>
+
+    <h3 class="title"> Revolucionamos tu experiencia gastronómica </h3>
+
+    <section class="section1">
+        <h4 class="p"> Que hacemos? </h4>
+        <p>1) Permitimos a los clientes realizar pedidos desde su dispositivo movil sin la necesidad de un mozo o facilitando la tarea del mismo. </p>
+        <p>2) Ayudamos a la hora de dividir la cuenta cuando se cena en grupo.  </p>    
+        <p>3) Brindamos informes detallados para los locales gastronomicos.  </p>    
+    </section>
+    <section class="section2">   
+        <h4 class="p"> Beneficios de trabajar con nosotros </h4>
+        <p class="botres" id="open-popup"> Reducir tiempos de espera </p>
+        <p class="botres" id="open-popup">Reducir problemas a la hora de pagar</p>
+        <p class="botres" id="open-popup">Reducir costos para el local gastronomico</p>
+        <p class="botres" id="open-popup">Manejo de informacion valiosa para el local gastronomico</p>
+
+        <div class="overlay " id="overlay">
+            <div class="popup-Bene " id="popup-Bene">
+                <div class="contenedor-cerrar"><i class="btn-cerrar-popup fas fa-times" id="btn-cerrar-popup"></i></div>
+                <p>Reducirrrrrrrrrrrrrrrrrrrrrrrr</p>
+                <p>Reducir problemas a la hora de pagar</p>
+                <p>Reducir costos para el local gastronomico</p>
+                <p>Manejo de informacion valiosa para el local gastronomico</p>
+            </div>
+        </div>
+
+        <!-- <p> Permitimos a los clientes realizar pedidos desde su dispositivo movil sin la necesidad de un mozo, gracias a la tecnologia QR y NFC (Near Field Communication).
+            Este enfoque garantiza que los pedidos lleguen directamente a la cocina, reduciendo drásticamente los tiempos de espera y costos.
+            Pero eso no es todo. Orderfy también aborda el desafío común de dividir los gastos cuando se cena en grupo. Nuestra aplicación permite a los clientes dividir sus cuentas de manera sencilla y equitativa.
+            Por otra parte, Orderfy brinda un servicio muy valioso para todos los restaurantes. A estos, les proporcionamos informes analíticos detallados que incluyen estadisticas y datos relevantes para el manejo de su negocio. 
+        </p> -->
+    </section>
+
+    <section class="section">
+        <br>
+        <h3 class="p">  Restaurantes que operan con Orderfy:  </h3>
+        {% for restaurant in restaurants %}
+            <h3 class="resname1"> {{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"></h3>
+            <div class="resimg-cont"><img class="resimg"src="{{ restaurant.image.url }}" alt="{{ restaurant.name }} image"></div>
+            <p> {{ restaurant.description }} </p>
+            <!-- <p class="color" style="background-color: var(--{{restaurant.slug}}-primary-color);"> primary color </p>
+            <p class="color" style="background-color: var(--{{restaurant.slug}}-secondary-color);"> secondary color </p> -->
+            <p class="cantsuc"> Cantidad de sucursales: {{ restaurant.q_branches }} </p>
+            <a class="botres" href="{% url 'restaurant' restaurant.slug %}"> Go to the restaurant </a>
+            <br><br>
+        {% endfor %}
+    </section>
+
+
+    <script src="../../static/js/restaurants.js"></script>
+</body>
+</html>

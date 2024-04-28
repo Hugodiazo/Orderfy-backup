@@ -1,0 +1,11 @@
+#pc{
+    background-color: var(--primary-color);
+}
+
+#sc{
+    background-color: var(--secondary-color);
+}
+
+img{
+    width: 200px;
+}

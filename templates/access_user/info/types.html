@@ -1,0 +1,43 @@
+{% extends 'access_user/base.html' %}
+{% load static %}
+
+{% block title %}types of categories info{% endblock %}
+
+{% block content %}
+    <a href="{% url 'db_branches' restaurant.slug %}"> Go back into branches info </a>
+
+    <!-- <h4> Name: {{ branch.name }} </h4>
+    <p> Ubication: {{ branch.ubication }}</p>
+    <p> Slug: {{ branch.slug }} </p>
+    <p> Image: </p>
+    <img src="{{ branch.image.url }}" alt="{{ branch.image.url }}"> 
+
+    por si queres poner info de la branch en esta pagina
+-->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% for type in types %}
+        <h4> Name: {{ type.name }} </h4>
+        <p> Slug: {{ type.slug }} </p>
+        <p> Image: </p>
+        <img src="{{ type.image.url }}" alt="{{ type.image.url }}"> <br>
+        <a href="{% url 'db_menu' restaurant.slug branch.slug type.slug %}">View menu</a> <br>
+        <a href="{% url 'edit_type' restaurant.slug branch.slug type.slug %}">Edit type of category</a> <br>
+        <a class="del_btn" href="{% url 'delete_type' restaurant.slug branch.slug type.slug %}">Delete type of category</a>
+    {% empty %}
+        <p>There are not types of categories loaded yet</p>
+    {% endfor %}
+    <br> <br>
+    <a href="{% url 'add_type' restaurant.slug branch.slug %}"> Add new type of category </a>
+
+    <!-- Pasar parámetros adicionales al bloque del template base -->
+    {{ block.super }}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/database/sure_delete.js' %}"></script>
+{% endblock %}

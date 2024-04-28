@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderFy - Pay order</title>
+
+    <link rel="stylesheet" href="{% static 'css/payment/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/restaurants/restaurants.css' %}">
+    <link rel="stylesheet" href="{% static 'css/order/order.css' %}">
+    <script src="https://kit.fontawesome.com/7792ec962c.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header>
+        <a href="{% url 'order' restaurant_slug branch_slug %}" class="boton fa-solid fa-arrow-left"> </a> <h3 class="p">{{ restaurant.name }} <img class="logo" src="{{ restaurant.logo.url }}" alt="{{ restaurant.name }} logo"></h3>
+    </header>
+
+    
+    <section class="section">
+
+        <br><br>
+
+        {% if messages %}
+            <br>
+            {% for message in messages %}
+                <div class="alert p alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if not order.decision_made %}
+            <h4 class="resname1">When do you want to pay?</h4>
+            <br>
+            <a class="boton" id="pay-now-btn">Pay now</a> <br>
+            <a class="pay-now-toggled not-shown" href="{% url 'pay_mp' branch_slug %}">Pay with Mercado Pago</a> <br>
+            <a class="pay-now-toggled not-shown" href="{% url 'pay_cash' branch_slug %}">Pay in cash</a>    
+            <br>
+            <a class="pay-now-toggled boton">Pay after eating</a>
+        {% endif %}
+    </section>
+    
+    
+
+    <script src="{% static 'js/payment/index.js' %}"></script>
+</body>
+</html>
